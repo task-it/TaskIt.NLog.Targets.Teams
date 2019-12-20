@@ -8,6 +8,13 @@ namespace NLog.Targets.Teams.Test.App
 {
     class Program
     {
+        /// <summary>
+        /// DO nothing
+        /// </summary>
+        private Program()
+        {
+        }
+
         static void Main(string[] args)
         {
             var logger = LogManager.GetCurrentClassLogger();
