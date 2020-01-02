@@ -22,10 +22,9 @@ namespace NLog.Targets.MsTeams
         /// flag if the default card should be used or if the card schold be created thru the specifies Layout.<br/>
         /// <see cref="TargetWithContext.Layout"/>
         /// true - NLog Layout will be user<br/>
-        /// false - default card will be user
-        /// </summary>
-        [RequiredParameter]
-        public bool UseLayout { get; set; }
+        /// false - default card will be used
+        /// </summary>        
+        public bool UseLayout { get; set; } = false;
 
         /// <summary>
         /// Name of the Accplication<br/>
@@ -67,7 +66,6 @@ namespace NLog.Targets.MsTeams
         protected override void Write(LogEventInfo logEvent)
         {
             CreateAndSendMessage(logEvent).GetAwaiter().GetResult();
-
         }
 
 

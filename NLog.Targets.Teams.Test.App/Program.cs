@@ -29,11 +29,15 @@ namespace NLog.Targets.Teams.Test.App
                 using (servicesProvider as IDisposable)
                 {
                     // comment this in to test the different log levels
-                    // var runner = servicesProvider.GetRequiredService<Runner>();
-                    // runner.DoActions("... NOT");
-
-                    // comment this in to show Exception messages
-                    throw new InvalidOperationException();
+                    var runner = servicesProvider.GetRequiredService<Runner>();
+                    try
+                    {
+                        runner.DoActions("... NOT");
+                    }
+                    catch (InvalidOperationException e)
+                    {
+                        logger.Fatal(e, "oO ... something is wrong, we're all doomed");
+                    }
 
                     Console.WriteLine("Press ANY key to exit");
                     Console.ReadKey();

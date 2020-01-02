@@ -5,7 +5,13 @@ VisualStudioVersion = 16.0.29519.87
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLog.Targets.Teams", "NLog.Targets.Teams\NLog.Targets.Teams.csproj", "{5512EB5E-3FB0-4AA0-9B5F-2C6DCB9433EE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLog.Targets.Teams.Test.App", "NLog.Targets.Teams.Test.App\NLog.Targets.Teams.Test.App.csproj", "{5D47319B-F429-47B1-AB60-1501D160452D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLog.Targets.Teams.Test.App", "NLog.Targets.Teams.Test.App\NLog.Targets.Teams.Test.App.csproj", "{5D47319B-F429-47B1-AB60-1501D160452D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{AEC49E2B-E8AD-4E65-B863-18AFE8F0DE9F}"
+	ProjectSection(SolutionItems) = preProject
+		Screenshots\DefaultCard.png = Screenshots\DefaultCard.png
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

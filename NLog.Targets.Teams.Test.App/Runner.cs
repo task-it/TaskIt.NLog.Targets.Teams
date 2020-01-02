@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System;
 
 namespace NLog.Targets.Teams.Test.App
 {
@@ -18,7 +19,7 @@ namespace NLog.Targets.Teams.Test.App
             _logger.LogInformation("Important Information");
             _logger.LogWarning("oO ... something is wrong, but I'm not sure");
             _logger.LogError("oO ... something is wrong, definetly");
-            _logger.LogCritical("oO ... something is wrong, we're all doomed");
+            throw new InvalidOperationException("It's a trap...");
 
         }
     }

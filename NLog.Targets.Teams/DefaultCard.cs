@@ -63,7 +63,7 @@ namespace NLog.Targets.MsTeams
             {
                 result = result.Replace("${exception}", logEvent.Exception.GetType().Name);
                 result = result.Replace("${exceptionMessage}", logEvent.Exception.Message);
-                result = result.Replace("${stacktrace}", logEvent.Exception.StackTrace.ToString());
+                result = result.Replace("${stacktrace}", logEvent.Exception.StackTrace?.ToString());
             }
 
             // globale bereinigung
