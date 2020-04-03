@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
+    <Title>NLog.Targets.Teams</Title>
 		<TargetFramework>netstandard2.0</TargetFramework>
 		<Version>1.1.0</Version>
 		<AssemblyVersion>1.1.0.0</AssemblyVersion>
@@ -8,10 +9,11 @@
 		<Authors>Christian Boland</Authors>
 		<Copyright>Task GmbH und Co. KG</Copyright>
 		<Description>Simple NLog logging target for Microsoft Teams</Description>
-		<PackageTags>task taskit NLog Teams</PackageTags>    
+		<PackageTags>task taskit nlog teams</PackageTags>    
 		<PackageProjectUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams/blob/master/LICENSE.txt</PackageLicenseUrl>
-	</PropertyGroup>
+    <PackageLicenseUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams/blob/master/LICENSE.txt</PackageLicenseUrl>    
+    <RepositoryUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams</RepositoryUrl>
+  </PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
 	<DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>    
@@ -22,7 +24,7 @@
 		<CodeAnalysisRuleSet>NLog.Targets.Teams.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 
-	<ItemGroup>
+	<ItemGroup>    
 		<PackageReference Include="NLog" Version="4.6.8" />
 	</ItemGroup>
 
