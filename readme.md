@@ -1,6 +1,6 @@
 # NLog.Targets.Teams
 
-Simple [NLog](https://nlog-project.org/) Loging Target for [Microsoft TEAMS](https://products.office.com/en/microsoft-teams/group-chat-software?market=en).<br/>
+Simple [NLog](https://nlog-project.org/) logging target for [Microsoft TEAMS](https://products.office.com/en/microsoft-teams/group-chat-software?market=en).<br/>
 The Target uses the TEAMS Incoming webhook. 
 For more Information about webhhoks in Teams read:<br/>
 https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors<br/> and <br/>
