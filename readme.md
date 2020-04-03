@@ -57,7 +57,7 @@ The color schema of the upper separator line will change according to the log le
 The colors are:
 
 Trace | Debug | Info | Warning | Error | Fatal |
---------- | -------- | -------- | -------- | -------- |
+--------- | -------- | -------- | -------- | -------- | -------- |
 White | Green | Blue | Yellow | Red | Black |
 
 The exception section will only be visible, when an exception is logged.
