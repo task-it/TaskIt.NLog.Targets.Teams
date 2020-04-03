@@ -70,4 +70,8 @@ The target will render the message according to the layout pattern and send it t
 This _should_ work, but I havn't tested this. All errors will be logged in the NLog internal log.<br/>
 For more information about the Teams message card formatting please read https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference .
 
+### Test App
+This Solution includes a console App for testing. Bevor you run it, you must add yout Teams webhook Url in the nlog.config inluded in the App (marked with: '<i>XXX PUT YOUR URL IN HERE XXX</i>')
+
+
 
