@@ -54,13 +54,11 @@ UseLayout | false | bool | Default = false <br/>Flag indicating whether the NLog
 The screenshot shows the built in Teams message card.
 ![Built In Card](Screenshots/DefaultCard.png)
 The color schema of the upper separator line will change according to the log level.
-The used colors look like this:<br/>
-<span style="background-color:black; color:#ffffff">TRACE</span>
-<span style="color:#00ff00">DEBUG</span>
-<span style="color:#0094FF">INFO</span>
-<span style="color:#FFE97F">WARNING</span>
-<span style="color:#ff0000">ERROR</span>
-<span style="color:#000000">FATAL</span>
+The colors are:
+
+Trace | Debug | Info | Warning | Error | Fatal |
+--------- | -------- | -------- | -------- | -------- |
+White | Green | Blue | Yellow | Red | Black |
 
 The exception section will only be visible, when an exception is logged.
 

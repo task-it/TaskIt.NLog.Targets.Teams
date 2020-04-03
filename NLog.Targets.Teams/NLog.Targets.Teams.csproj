@@ -7,10 +7,10 @@
 		<Company>Task GmbH und Co. KG</Company>
 		<Authors>Christian Boland</Authors>
 		<Copyright>Task GmbH und Co. KG</Copyright>
-		<Description>Simple NLogLoging Target for Microsoft Teams</Description>
+		<Description>Simple NLog logging target for Microsoft Teams</Description>
 		<PackageTags>task taskit NLog Teams</PackageTags>    
 		<PackageProjectUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/task-it/TaskIt.NLog.Targets.Teams/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/task-it/TaskIt.NLog.Targets.Teams/blob/master/LICENSE.txt</PackageLicenseUrl>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">    
