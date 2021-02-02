@@ -2,19 +2,19 @@
 
 namespace NLog.Targets.MsTeams
 {
-    internal class DefaultCard
+    public class DefaultCard
     {
         /// <summary>
         /// Card part for the Exception visualization
         /// </summary>
-        private const string JSON_EXCEPTION = @", { ""activityTitle""	: ""${exception}"", ""activitySubtitle"": ""${exceptionMessage}"", ""activityText"": ""${stacktrace}""}";
+        public const string JSON_EXCEPTION = @", { ""activityTitle""	: ""${exception}"", ""activitySubtitle"": ""${exceptionMessage}"", ""activityText"": ""${stacktrace}""}";
         /// <summary>
         /// JSON String for the main Part of the Card
         /// </summary>
-        private const string JSON_MAIN_CARD = @"""@type"": ""MessageCard"", ""@context"": ""http://schema.org/extensions"", ""themeColor"": ""${color}"", ""title"": ""${application}"",  ""text"": ""${environment}"", ""sections"": [{""facts"": [{""name"": ""${level}"",""value"": ""${message}"" }]}";
+        public const string JSON_MAIN_CARD = @"""@type"": ""MessageCard"", ""@context"": ""http://schema.org/extensions"", ""themeColor"": ""${color}"", ""title"": ""${application}"",  ""text"": ""${environment}"", ""sections"": [{""facts"": [{""name"": ""${level}"",""value"": ""${message}"" }]}";
 
-        private const string JSON_CARD_WITH_EXCEPTION = "{" + JSON_MAIN_CARD + JSON_EXCEPTION + "]}";
-        private const string JSON_CARD_NO_EXCEPTION = "{" + JSON_MAIN_CARD + "]}";
+        public const string JSON_CARD_WITH_EXCEPTION = "{" + JSON_MAIN_CARD + JSON_EXCEPTION + "]}";
+        public const string JSON_CARD_NO_EXCEPTION = "{" + JSON_MAIN_CARD + "]}";
 
         /// <summary>
         /// Colors for the different Log Levels
