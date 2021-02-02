@@ -2,6 +2,9 @@
 
 namespace NLog.Targets.MsTeams
 {
+    /// <summary>
+    /// Default Implementation for a Message Card in MS Teams
+    /// </summary>
     public class DefaultCard
     {
         /// <summary>
@@ -13,7 +16,14 @@ namespace NLog.Targets.MsTeams
         /// </summary>
         public const string JSON_MAIN_CARD = @"""@type"": ""MessageCard"", ""@context"": ""http://schema.org/extensions"", ""themeColor"": ""${color}"", ""title"": ""${application}"",  ""text"": ""${environment}"", ""sections"": [{""facts"": [{""name"": ""${level}"",""value"": ""${message}"" }]}";
 
+        /// <summary>
+        /// JSON String for a card with Exception
+        /// </summary>        
         public const string JSON_CARD_WITH_EXCEPTION = "{" + JSON_MAIN_CARD + JSON_EXCEPTION + "]}";
+
+        /// <summary>
+        /// JSON String for a Card without exception
+        /// </summary>
         public const string JSON_CARD_NO_EXCEPTION = "{" + JSON_MAIN_CARD + "]}";
 
         /// <summary>
@@ -40,15 +50,15 @@ namespace NLog.Targets.MsTeams
         public string CreateMessage(LogEventInfo logEvent, string applicationName, string environment)
         {
             // get the resulting card json
-            string result = DefaultCard.JSON_CARD_WITH_EXCEPTION;
+            string result = JSON_CARD_WITH_EXCEPTION;
             if (logEvent.Exception == null)
             {
-                result = DefaultCard.JSON_CARD_NO_EXCEPTION;
+                result = JSON_CARD_NO_EXCEPTION;
             }
 
             // format / replace contents in Card
             //color
-            DefaultCard.ColorMap.TryGetValue(logEvent.Level, out string color);
+            ColorMap.TryGetValue(logEvent.Level, out string color);
             result = result.Replace("${color}", color ?? "ffffff");
             // level
             result = result.Replace("${level}", logEvent.Level.ToString().ToUpper());
