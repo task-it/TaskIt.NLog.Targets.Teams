@@ -1,12 +1,12 @@
-﻿using NLog.Targets.Teams;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace NLog.Targets.MsTeams
+namespace NLog.Targets.Teams.Test.App
 {
     /// <summary>
-    /// Default Implementation for a Message Card in MS Teams
+    /// Just for demostration purpose<br/>
+    /// The messages look like the default Card Implementation, but all levels use black as color
     /// </summary>
-    public class DefaultCard : IMessageCard
+    class CustomMessageCard : IMessageCard
     {
         /// <summary>
         /// Card part for the Exception visualization
@@ -32,11 +32,11 @@ namespace NLog.Targets.MsTeams
         /// </summary>
         public static readonly Dictionary<LogLevel, string> ColorMap = new Dictionary<LogLevel, string>()
         {
-            { LogLevel.Trace, "ffffff" },
-            { LogLevel.Debug, "00ff00" },
-            { LogLevel.Info, "0094FF" },
-            { LogLevel.Warn, "FFE97F" },
-            { LogLevel.Error, "ff0000" },
+            { LogLevel.Trace, "000000" },
+            { LogLevel.Debug, "000000" },
+            { LogLevel.Info, "000000" },
+            { LogLevel.Warn, "000000" },
+            { LogLevel.Error, "000000" },
             { LogLevel.Fatal, "000000" },
             { LogLevel.Off, "ffffff" }
         };

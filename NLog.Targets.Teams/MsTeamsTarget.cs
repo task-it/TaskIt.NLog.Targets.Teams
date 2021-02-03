@@ -1,4 +1,5 @@
 ﻿using NLog.Config;
+using NLog.Targets.Teams;
 using System;
 using System.Net.Http;
 using System.Threading;
@@ -19,12 +20,16 @@ namespace NLog.Targets.MsTeams
         public string Url { get; set; }
 
         /// <summary>
-        /// flag if the default card should be used or if the card schold be created thru the specifies Layout.<br/>
-        /// <see cref="TargetWithContext.Layout"/>
-        /// true - NLog Layout will be user<br/>
-        /// false - default card will be used
+        /// fully qualified Name of the (custom) <see cref="IMessageCard"/> Implementation Class.<br/>
+        /// if ommitted, the default Implementation will be used.
         /// </summary>        
-        public bool UseLayout { get; set; } = false;
+        public string CardImpl { get; set; } = typeof(DefaultCard).FullName;
+
+        /// <summary>
+        /// fully qualified Assembly Name in which <see cref="CardImpl"/> is implemented.<br/>
+        /// if ommitted, the Default Implementation in this assembly will be used.
+        /// </summary>        
+        public string CardAssembly { get; set; } = typeof(DefaultCard).Assembly.GetName().Name;
 
         /// <summary>
         /// Name of the Accplication<br/>
@@ -39,6 +44,40 @@ namespace NLog.Targets.MsTeams
         /// </summary>
         [RequiredParameter]
         public string Environment { get; set; }
+
+        /// <summary>
+        /// Message Card reference
+        /// </summary>
+        private IMessageCard _messageCard = null;
+
+        /// <summary>
+        /// Message Card Implementation Reference
+        /// </summary>
+        private IMessageCard MessageCard
+        {
+            // laze initialization for the Card Implementation
+            get
+            {
+                if (_messageCard == null)
+                {
+                    _messageCard = CreateMessageCard();
+                }
+                return _messageCard;
+            }
+        }
+
+        /// <summary>
+        /// Creates the Card Implementation from the Parameters <see cref="CardImpl"/> and <see cref="CardAssembly"/>
+        /// </summary>
+        /// <returns></returns>
+        private IMessageCard CreateMessageCard()
+        {
+            string cardToInstantiate = $"{CardImpl}, {CardAssembly}";
+            var cardType = Type.GetType(cardToInstantiate);
+
+            return Activator.CreateInstance(cardType) as IMessageCard;
+        }
+
 
         /// <summary>
         /// Construction
@@ -107,12 +146,7 @@ namespace NLog.Targets.MsTeams
         /// <returns></returns>
         private string CreateMessage(LogEventInfo logEvent)
         {
-            if (UseLayout)
-            {
-                return RenderLogEvent(Layout, logEvent);
-            }
-
-            return new DefaultCard().CreateMessage(logEvent, ApplicationName, Environment);
+            return MessageCard.CreateMessage(logEvent, ApplicationName, Environment);
         }
 
 
