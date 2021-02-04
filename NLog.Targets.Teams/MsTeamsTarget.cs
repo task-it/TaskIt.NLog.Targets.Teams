@@ -1,7 +1,9 @@
 ﻿using NLog.Config;
+using NLog.Layouts;
 using NLog.Targets.Teams;
 using System;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,11 +41,21 @@ namespace NLog.Targets.MsTeams
         public string ApplicationName { get; set; }
 
         /// <summary>
+        /// Layout if the <see cref="ApplicationName"/> Parameter contains any vars or something like it
+        /// </summary>
+        private Layout _applicationNameLayout = null;
+
+        /// <summary>
         /// Environment / Stage your Application runs in (eg. develop, stage, production)<br/>
         /// NOT a System Environment variable
         /// </summary>
         [RequiredParameter]
         public string Environment { get; set; }
+
+        /// <summary>
+        /// Layout if the <see cref="Environment"/> Parameter contains any vars or something like it
+        /// </summary>
+        private Layout _environmentLayout = null;
 
         /// <summary>
         /// Message Card reference
@@ -78,13 +90,51 @@ namespace NLog.Targets.MsTeams
             return Activator.CreateInstance(cardType) as IMessageCard;
         }
 
-
         /// <summary>
         /// Construction
         /// </summary>        
         public MsTeamsTarget()
         {
-            IncludeEventProperties = true; // Include LogEvent Properties by default            
+            IncludeEventProperties = true; // Include LogEvent Properties by default                
+        }
+
+        /// <summary>
+        /// <see cref="AsyncTaskTarget.InitializeTarget"/>
+        /// </summary>
+        protected override void InitializeTarget()
+        {
+            base.InitializeTarget();
+            ResolveVariables();
+        }
+
+        /// <summary>
+        /// Resolves the layout if the parameter contains one
+        /// </summary>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        private Layout ResolveVar(string parameter)
+        {
+            SimpleLayout result = null;
+            string pattern = @"\${var:(.*)}";
+            Regex regex = new Regex(pattern);
+            var match = regex.Match(parameter);
+            if (!match.Success)
+            {
+                return result;
+            }
+            var key = match.Groups[1].Value;
+            LoggingConfiguration.Variables.TryGetValue(key, out result);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Resolves VAR: Parameters
+        /// </summary>
+        private void ResolveVariables()
+        {
+            _applicationNameLayout = ResolveVar(ApplicationName);
+            _environmentLayout = ResolveVar(Environment);
         }
 
         /// <summary>
@@ -97,6 +147,7 @@ namespace NLog.Targets.MsTeams
         {
             await CreateAndSendMessage(logEvent);
         }
+
 
         /// <summary>
         /// <see cref="AsyncTaskTarget.Write(Common.AsyncLogEventInfo)"/>
@@ -146,7 +197,20 @@ namespace NLog.Targets.MsTeams
         /// <returns></returns>
         private string CreateMessage(LogEventInfo logEvent)
         {
-            return MessageCard.CreateMessage(logEvent, ApplicationName, Environment);
+            var appname = ApplicationName;
+            var env = Environment;
+            // render layouts if necessary
+            if (_applicationNameLayout != null)
+            {
+                appname = _applicationNameLayout.Render(logEvent);
+            }
+            if (_environmentLayout != null)
+            {
+                env = _environmentLayout.Render(logEvent);
+            }
+
+            // call the Card implementation
+            return MessageCard.CreateMessage(logEvent, appname, env);
         }
 
 
