@@ -1,16 +1,19 @@
 # NLog.Targets.Teams
 
-Simple [NLog](https://nlog-project.org/) logging target for [Microsoft TEAMS](https://products.office.com/en/microsoft-teams/group-chat-software?market=en).<br/>
-The Target uses the TEAMS Incoming webhook. 
-For more Information about webhhoks in Teams read:<br/>
-https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors<br/> and <br/>
-https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook
+Simple [NLog](https://nlog-project.org/) logging target for [Microsoft TEAMS](https://products.office.com/en/microsoft-teams/group-chat-software?market=en).
+
+The Target uses the TEAMS Incoming webhook.
+
+For more Information about webhhoks in Teams read:
+- https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors
+- https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook
 
 The target has a built in layout for the Teams card so you don't have to design it by yourself.
 
 ## Installation
-Simply add the nuget dependency. NLog will do th rest (see: [Configuration - NLog](#NLog)).
+[![NuGet downloads](https://img.shields.io/nuget/dt/NLog.Targets.Teams.svg)](https://www.nuget.org/packages/NLog.Targets.Teams)
 
+Simply add the nuget dependency. NLog will do th rest (see: [Configuration - NLog](#NLog)).
 
 ## Configuration
 
@@ -26,9 +29,7 @@ See: https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-conne
 ### Your Application
 
 Configure the target in your `nlog.config`.
-The NLog type of the Target is:<br/>
-`MsTeams`
-
+The NLog type of the Target is: `MsTeams`
 
 ### Parameters
 
@@ -71,6 +72,3 @@ For more information about the Teams message card formatting please read https:/
 This solution includes a console App for testing.<br/> 
 Bevor you run it, you must add yout Teams webhook Url in the nlog.config inluded in the App (marked with: '<i>XXX PUT YOUR URL IN HERE XXX</i>').<br/>
 The demo app also inlcudes a custom `IMessageCard` implementation (and NLog config), but its very similar to the default implementation. I've only changed the colors.
-
-
-
