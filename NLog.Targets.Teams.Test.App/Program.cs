@@ -32,7 +32,7 @@ namespace NLog.Targets.Teams.Test.App
                     var runner = servicesProvider.GetRequiredService<Runner>();
                     try
                     {
-                        runner.DoActions("... NOT");
+                        runner.DoActions();
                     }
                     catch (InvalidOperationException e)
                     {

@@ -12,7 +12,7 @@ namespace NLog.Targets.Teams.Test.App
             _logger = logger;
         }
 
-        public void DoActions(string name)
+        public void DoActions()
         {
             _logger.LogTrace("Leave no trace behind");
             _logger.LogDebug("Debugging is so nice ... NOT");

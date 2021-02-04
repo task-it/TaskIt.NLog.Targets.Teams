@@ -34,19 +34,20 @@ The NLog type of the Target is:<br/>
 
 Parameter | Required | Type | Description |
 --------- | -------- | ---- | ----------- |
-Url | true | string | Ms Teams incoming Webhook URL |
+Url | true | string | Ms Teams incoming webhook URL |
 ApplicationName | true | string | the name of your application |
 Environment | true | string | the stage your application runs in (e.g. develop, staging, production ) |
-UseLayout | false | bool | Default = false <br/>Flag indicating whether the NLog layout property or the default Teams Card implementation will be used | 
+~~UseLayout~~ |  |  | Deprecated | 
+CardImpl | false | string | Fully qualified name of the custom messageCard implementation.<br>If omitted, the internal default implementation will be used. | 
+CardAssembly | false | string | Name of the assembly which holds the _CardImpl_.<br/> Required if you use a cutom messageCard implementation. | 
 
 ### Sample Configuration
 ```
 <target xsi:type="MsTeams" 
-            name="whatever" 
-            layout=""  
+            name="whatever"             
             Url="<your TEAMS incoming webhook url>"          
             ApplicationName="<your application name>"
-            Environment="<Executing Environment>" />
+            Environment="<executing environment>" />
 ```
 
 ### Default Teams Message Card
@@ -63,13 +64,13 @@ White | Green | Blue | Yellow | Red | Black |
 The exception section will only be visible, when an exception is logged.
 
 ### Custom Teams Message Card
-To use your own message card, simply set the parameter `UseLayout` in your `nlog.config` to `true` and specify a NLog `layout`.<br/>
-The target will render the message according to the layout pattern and send it to the URL.<br/>
-This _should_ work, but I havn't tested this. All errors will be logged in the NLog internal log.<br/>
+To use your own message card, implement the Interface `IMessageCard` (provided by the Package) and set the Parameters `CardImpl` and `CardAssembly` in the NLog config.<br/>
 For more information about the Teams message card formatting please read https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference .
 
 ### Test App
-This Solution includes a console App for testing. Bevor you run it, you must add yout Teams webhook Url in the nlog.config inluded in the App (marked with: '<i>XXX PUT YOUR URL IN HERE XXX</i>')
+This solution includes a console App for testing.<br/> 
+Bevor you run it, you must add yout Teams webhook Url in the nlog.config inluded in the App (marked with: '<i>XXX PUT YOUR URL IN HERE XXX</i>').<br/>
+The demo app also inlcudes a custom `IMessageCard` implementation (and NLog config), but its very similar to the default implementation. I've only changed the colors.
 
 
 
