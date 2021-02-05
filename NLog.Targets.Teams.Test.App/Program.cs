@@ -22,7 +22,7 @@ namespace NLog.Targets.Teams.Test.App
             {
                 var config = new ConfigurationBuilder()
                    .SetBasePath(System.IO.Directory.GetCurrentDirectory()) //From NuGet Package Microsoft.Extensions.Configuration.Json
-                                                                           //.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                   .AddJsonFile("appSettingDemo.json", optional: true, reloadOnChange: true)
                    .Build();
 
                 var servicesProvider = BuildDi(config);

@@ -21,18 +21,6 @@ namespace NLog.Targets.MsTeams
         public Layout Url { get; set; }
 
         /// <summary>
-        /// fully qualified Name of the (custom) <see cref="IMessageCard"/> Implementation Class.<br/>
-        /// if ommitted, the default Implementation will be used.
-        /// </summary>        
-        public string CardImpl { get; set; } = typeof(DefaultCard).FullName;
-
-        /// <summary>
-        /// fully qualified Assembly Name in which <see cref="CardImpl"/> is implemented.<br/>
-        /// if ommitted, the Default Implementation in this assembly will be used.
-        /// </summary>        
-        public string CardAssembly { get; set; } = typeof(DefaultCard).Assembly.GetName().Name;
-
-        /// <summary>
         /// Name of the Accplication<br/>
         /// Will be displayed as Title in the default card layout
         /// </summary>
@@ -47,6 +35,18 @@ namespace NLog.Targets.MsTeams
         public Layout Environment { get; set; }
 
         /// <summary>
+        /// fully qualified Name of the (custom) <see cref="IMessageCard"/> Implementation Class.<br/>
+        /// if ommitted, the default Implementation will be used.
+        /// </summary>        
+        public string CardImpl { get; set; } = typeof(DefaultCard).FullName;
+
+        /// <summary>
+        /// fully qualified Assembly Name in which <see cref="CardImpl"/> is implemented.<br/>
+        /// if ommitted, the Default Implementation in this assembly will be used.
+        /// </summary>        
+        public string CardAssembly { get; set; } = typeof(DefaultCard).Assembly.GetName().Name;
+
+        /// <summary>
         /// Message Card reference
         /// </summary>
         private IMessageCard _messageCard = null;
@@ -56,7 +56,7 @@ namespace NLog.Targets.MsTeams
         /// </summary>
         private IMessageCard MessageCard
         {
-            // laze initialization for the Card Implementation
+            // lazy initialization for the Card Implementation
             get
             {
                 if (_messageCard == null)
@@ -84,6 +84,7 @@ namespace NLog.Targets.MsTeams
         /// </summary>        
         public MsTeamsTarget()
         {
+            // do nothing
         }
 
         /// <summary>
