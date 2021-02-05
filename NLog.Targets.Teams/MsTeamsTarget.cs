@@ -1,4 +1,5 @@
 ﻿using NLog.Config;
+using NLog.Layouts;
 using NLog.Targets.Teams;
 using System;
 using System.Net.Http;
@@ -17,7 +18,7 @@ namespace NLog.Targets.MsTeams
         /// Ms Teams Incoming Webhook URL as string
         /// </summary>
         [RequiredParameter]
-        public string Url { get; set; }
+        public Layout Url { get; set; }
 
         /// <summary>
         /// fully qualified Name of the (custom) <see cref="IMessageCard"/> Implementation Class.<br/>
@@ -36,14 +37,14 @@ namespace NLog.Targets.MsTeams
         /// Will be displayed as Title in the default card layout
         /// </summary>
         [RequiredParameter]
-        public string ApplicationName { get; set; }
+        public Layout ApplicationName { get; set; }
 
         /// <summary>
         /// Environment / Stage your Application runs in (eg. develop, stage, production)<br/>
         /// NOT a System Environment variable
         /// </summary>
         [RequiredParameter]
-        public string Environment { get; set; }
+        public Layout Environment { get; set; }
 
         /// <summary>
         /// Message Card reference
@@ -78,13 +79,11 @@ namespace NLog.Targets.MsTeams
             return Activator.CreateInstance(cardType) as IMessageCard;
         }
 
-
         /// <summary>
         /// Construction
         /// </summary>        
         public MsTeamsTarget()
         {
-            IncludeEventProperties = true; // Include LogEvent Properties by default            
         }
 
         /// <summary>
@@ -95,28 +94,12 @@ namespace NLog.Targets.MsTeams
         /// <returns></returns>
         protected override async Task WriteAsyncTask(LogEventInfo logEvent, CancellationToken cancellationToken)
         {
-            await CreateAndSendMessage(logEvent);
-        }
+            var applicationName = RenderLogEvent(ApplicationName, logEvent);
+            var environment = RenderLogEvent(Environment, logEvent);
+            var urlAddress = RenderLogEvent(Url, logEvent);
 
-        /// <summary>
-        /// <see cref="AsyncTaskTarget.Write(Common.AsyncLogEventInfo)"/>
-        /// </summary>
-        /// <param name="logEvent"></param>
-        protected override void Write(LogEventInfo logEvent)
-        {
-            CreateAndSendMessage(logEvent).GetAwaiter().GetResult();
-        }
-
-
-        /// <summary>
-        /// internal implementation for async / sync writing
-        /// </summary>
-        /// <param name="logEvent"></param>
-        /// <returns></returns>
-        private async Task CreateAndSendMessage(LogEventInfo logEvent)
-        {
-            string logMessage = CreateMessage(logEvent);
-            var response = await SendMessage(logMessage);
+            string logMessage = MessageCard.CreateMessage(logEvent, applicationName, environment);
+            var response = await SendMessage(urlAddress, logMessage).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {
                 throw new InvalidOperationException($"Rest Call Failed - {response.ReasonPhrase}");
@@ -126,29 +109,16 @@ namespace NLog.Targets.MsTeams
         /// <summary>
         /// posts the message to the url
         /// </summary>
-        /// <param name="logMessage"></param>
-        private async Task<HttpResponseMessage> SendMessage(string logMessage)
+        private async Task<HttpResponseMessage> SendMessage(string urlAddress, string logMessage)
         {
             var messageContent = new StringContent(logMessage);
             messageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
 
             using (var httpClient = new HttpClient())
             {
-                var targetUrl = new Uri(Url);
-                return await httpClient.PostAsync(targetUrl, messageContent);
+                var targetUrl = new Uri(urlAddress);
+                return await httpClient.PostAsync(targetUrl, messageContent).ConfigureAwait(false);
             }
         }
-
-        /// <summary>
-        /// Creates the Message string
-        /// </summary>
-        /// <param name="logEvent"></param>
-        /// <returns></returns>
-        private string CreateMessage(LogEventInfo logEvent)
-        {
-            return MessageCard.CreateMessage(logEvent, ApplicationName, Environment);
-        }
-
-
     }
 }
