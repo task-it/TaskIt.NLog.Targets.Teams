@@ -68,7 +68,21 @@ The exception section will only be visible, when an exception is logged.
 To use your own message card, implement the Interface `IMessageCard` (provided by the Package) and set the Parameters `CardImpl` and `CardAssembly` in the NLog config.<br/>
 For more information about the Teams message card formatting please read https://docs.microsoft.com/en-us/outlook/actionable-messages/message-card-reference .
 
-### Test App
+
+# Test App
 This solution includes a console App for testing.<br/> 
 Bevor you run it, you must add yout Teams webhook Url in the nlog.config inluded in the App (marked with: '<i>XXX PUT YOUR URL IN HERE XXX</i>').<br/>
 The demo app also inlcudes a custom `IMessageCard` implementation (and NLog config), but its very similar to the default implementation. I've only changed the colors.
+
+
+# Changelog
+
+### 2.0.0
+* __breaking change__: removed parameter `UseLayout`
+* __breaking change__: NLog Layout parameter will be ignored
+* Parameters (`Url`, `ApplicationName`, `Environment`) are now NLog layouts, which enables variable support
+* __new optional parameters__: `CardImpl` and `CardAssembly` for easier custom message Card implementation
+* added interface `IMessageCard` for easier custom message Card implementation
+* Dema app updated to net5.0
+* Demo app updated for easier adaption
+
