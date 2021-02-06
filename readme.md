@@ -83,6 +83,6 @@ The demo app also inlcudes a custom `IMessageCard` implementation (and NLog conf
 * Parameters (`Url`, `ApplicationName`, `Environment`) are now NLog layouts, which enables variable support
 * __new optional parameters__: `CardImpl` and `CardAssembly` for easier custom message Card implementation
 * added interface `IMessageCard` for easier custom message Card implementation
-* Dema app updated to net5.0
+* Demo app updated to net5.0
 * Demo app updated for easier adaption
 
