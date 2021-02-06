@@ -35,9 +35,9 @@ The NLog type of the Target is: `MsTeams`
 
 Parameter | Required | Type | Description |
 --------- | -------- | ---- | ----------- |
-Url | true | string | Ms Teams incoming webhook URL |
-ApplicationName | true | string | the name of your application |
-Environment | true | string | the stage your application runs in (e.g. develop, staging, production ) |
+Url | true | string  (layout) | Ms Teams incoming webhook URL |
+ApplicationName | true | string  (layout) | the name of your application |
+Environment | true | string  (layout) | the stage your application runs in (e.g. develop, staging, production ) |
 ~~UseLayout~~ |  |  | Deprecated | 
 CardImpl | false | string | Fully qualified name of the custom messageCard implementation.<br>If omitted, the internal default implementation will be used. | 
 CardAssembly | false | string | Name of the assembly which holds the _CardImpl_.<br/> Required if you use a cutom messageCard implementation. | 
@@ -52,7 +52,8 @@ CardAssembly | false | string | Name of the assembly which holds the _CardImpl_.
 ```
 
 ### Default Teams Message Card
-
+The package provides an interface for implementing Teams message cards (`IMessageCard`).  
+If the Parameters `CardImpl` and `CardAssembly` ar omitted, the default (built in) `IMessageCard` implementation will be used.
 The screenshot shows the built in Teams message card.
 ![Built In Card](Screenshots/DefaultCard.png)
 The color schema of the upper separator line will change according to the log level.
