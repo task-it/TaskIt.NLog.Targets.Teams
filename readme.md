@@ -1,4 +1,6 @@
 # NLog.Targets.Teams
+[![NuGet](https://img.shields.io/nuget/v/NLog.Targets.Teams.svg)](https://www.nuget.org/packages/NLog.Targets.Teams)
+[![NuGet downloads](https://img.shields.io/nuget/dt/NLog.Targets.Teams.svg)](https://www.nuget.org/packages/NLog.Targets.Teams)  
 
 Simple [NLog](https://nlog-project.org/) logging target for [Microsoft TEAMS](https://products.office.com/en/microsoft-teams/group-chat-software?market=en).
 
@@ -11,8 +13,6 @@ For more Information about webhhoks in Teams read:
 The target has a built in layout for the Teams card so you don't have to design it by yourself.
 
 ## Installation
-[![NuGet downloads](https://img.shields.io/nuget/dt/NLog.Targets.Teams.svg)](https://www.nuget.org/packages/NLog.Targets.Teams)
-
 Simply add the nuget dependency. NLog will do th rest (see: [Configuration - NLog](#NLog)).
 
 ## Configuration
