@@ -43,7 +43,7 @@ CardImpl | false | string | Fully qualified name of the custom messageCard imple
 CardAssembly | false | string | Name of the assembly which holds the _CardImpl_.<br/> Required if you use a cutom messageCard implementation. | 
 
 ### Sample Configuration
-```
+```xml
 <target xsi:type="MsTeams" 
             name="whatever"             
             Url="<your TEAMS incoming webhook url>"          
