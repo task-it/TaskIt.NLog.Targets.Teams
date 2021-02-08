@@ -6,7 +6,7 @@ Simple [NLog](https://nlog-project.org/) logging target for [Microsoft TEAMS](ht
 
 The Target uses the TEAMS Incoming webhook.
 
-For more Information about webhhoks in Teams read:
+For more Information about webhooks in Teams read:
 - https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/what-are-webhooks-and-connectors
 - https://docs.microsoft.com/en-us/microsoftteams/platform/webhooks-and-connectors/how-to/add-incoming-webhook
 
