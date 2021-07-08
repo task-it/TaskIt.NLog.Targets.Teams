@@ -54,6 +54,18 @@ namespace NLog.Targets.MsTeams
         public Layout ProxyUrl { get; set; }
 
         /// <summary>
+        /// Proxy user<br/>
+        /// Used only if ProxyUrl is provided
+        /// </summary>
+        public Layout ProxyUser { get; set; }
+
+        /// <summary>
+        /// Proxy pass<br/>
+        /// Used only if ProxyUrl is provided
+        /// </summary>
+        public Layout ProxyPassword { get; set; }
+
+        /// <summary>
         /// Message Card reference
         /// </summary>
         private IMessageCard _messageCard = null;
@@ -106,9 +118,11 @@ namespace NLog.Targets.MsTeams
             var environment = RenderLogEvent(Environment, logEvent);
             var urlAddress = RenderLogEvent(Url, logEvent);
             var proxyUrl = RenderLogEvent(ProxyUrl, logEvent);
+            var proxyUser = RenderLogEvent(ProxyUser, logEvent);
+            var proxyPassword = RenderLogEvent(ProxyPassword, logEvent);
 
             string logMessage = MessageCard.CreateMessage(logEvent, applicationName, environment);
-            var response = await SendMessage(urlAddress, proxyUrl, logMessage).ConfigureAwait(false);
+            var response = await SendMessage(urlAddress, proxyUrl, proxyUser, proxyPassword, logMessage).ConfigureAwait(false);
             if (!response.IsSuccessStatusCode)
             {
                 throw new InvalidOperationException($"Rest Call Failed - {response.ReasonPhrase}");
@@ -118,7 +132,7 @@ namespace NLog.Targets.MsTeams
         /// <summary>
         /// posts the message to the url
         /// </summary>
-        private async Task<HttpResponseMessage> SendMessage(string urlAddress, string proxyUrl, string logMessage)
+        private async Task<HttpResponseMessage> SendMessage(string urlAddress, string proxyUrl, string proxyUser, string ProxyPass, string logMessage)
         {
             var messageContent = new StringContent(logMessage);
             messageContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
@@ -127,21 +141,22 @@ namespace NLog.Targets.MsTeams
             if (!string.IsNullOrEmpty(proxyUrl))
             {
                 proxiedHttpClientHandler = new HttpClientHandler() { UseProxy = true };
-                proxiedHttpClientHandler.Proxy = new WebProxy(proxyUrl);
+
+                if (!string.IsNullOrEmpty(proxyUser))
+                {
+                    ICredentials credentials = new NetworkCredential(proxyUser, ProxyPass);
+                    proxiedHttpClientHandler.Proxy = new WebProxy(proxyUrl, false, null, credentials);
+                }
+                else
+                {
+                    proxiedHttpClientHandler.Proxy = new WebProxy(proxyUrl);
+                }
             }
 
             using (var httpClient = new HttpClient(proxiedHttpClientHandler))
             {
                 var targetUrl = new Uri(urlAddress);
-                try
-                {
-                    var res = await httpClient.PostAsync(targetUrl, messageContent).ConfigureAwait(true);
-                    return res;
-                }
-                catch(Exception ex)
-                {
-                    return null;
-                }
+                return await httpClient.PostAsync(targetUrl, messageContent).ConfigureAwait(false);
             }
         }
     }
