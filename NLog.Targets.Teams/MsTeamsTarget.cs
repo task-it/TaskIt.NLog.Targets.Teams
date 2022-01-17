@@ -38,18 +38,38 @@ namespace NLog.Targets.MsTeams
         /// fully qualified Name of the (custom) <see cref="IMessageCard"/> Implementation Class.<br/>
         /// if ommitted, the default Implementation will be used.
         /// </summary>        
-        public string CardImpl { get; set; } = typeof(DefaultCard).FullName;
+        public string CardImpl
+        {
+            get => _cardImpl;
+            set
+            {
+                _cardImpl = value;
+                if (!string.IsNullOrEmpty(_cardImpl))
+                    _messageCard = null;
+            }
+        }
+        private string _cardImpl;
 
         /// <summary>
         /// fully qualified Assembly Name in which <see cref="CardImpl"/> is implemented.<br/>
         /// if ommitted, the Default Implementation in this assembly will be used.
         /// </summary>        
-        public string CardAssembly { get; set; } = typeof(DefaultCard).Assembly.GetName().Name;
-
+        public string CardAssembly
+        {
+            get => _cardAssembly;
+            set
+            {
+                _cardAssembly = value;
+                if (!string.IsNullOrEmpty(_cardAssembly))
+                    _messageCard = null;
+            }
+        }
+        private string _cardAssembly;
+        
         /// <summary>
         /// Message Card reference
         /// </summary>
-        private IMessageCard _messageCard = null;
+        private IMessageCard _messageCard;
 
         /// <summary>
         /// Message Card Implementation Reference
@@ -75,7 +95,6 @@ namespace NLog.Targets.MsTeams
         {
             string cardToInstantiate = $"{CardImpl}, {CardAssembly}";
             var cardType = Type.GetType(cardToInstantiate);
-
             return Activator.CreateInstance(cardType) as IMessageCard;
         }
 
@@ -84,15 +103,24 @@ namespace NLog.Targets.MsTeams
         /// </summary>        
         public MsTeamsTarget()
         {
-            // do nothing
+            OptimizeBufferReuse = true;
         }
 
-        /// <summary>
-        /// <see cref="AsyncTaskTarget.WriteAsyncTask(LogEventInfo, CancellationToken)"/>
-        /// </summary>
-        /// <param name="logEvent"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <inheritdoc />
+        protected override void InitializeTarget()
+        {
+            if (string.IsNullOrEmpty(_cardImpl) && string.IsNullOrEmpty(_cardAssembly))
+            {
+                if (ContextProperties.Count > 0)
+                    _messageCard = new TargetJsonLayoutCard(this);
+                else
+                    _messageCard = new DefaultCard();
+            }
+
+            base.InitializeTarget();
+        }
+
+        /// <inheritdoc />
         protected override async Task WriteAsyncTask(LogEventInfo logEvent, CancellationToken cancellationToken)
         {
             var applicationName = RenderLogEvent(ApplicationName, logEvent);
@@ -120,6 +148,11 @@ namespace NLog.Targets.MsTeams
                 var targetUrl = new Uri(urlAddress);
                 return await httpClient.PostAsync(targetUrl, messageContent).ConfigureAwait(false);
             }
+        }
+
+        internal string RenderTargetLayout(LogEventInfo logEvent)
+        {
+            return RenderLogEvent(Layout, logEvent);
         }
     }
 }

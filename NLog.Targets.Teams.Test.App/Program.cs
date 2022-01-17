@@ -25,23 +25,30 @@ namespace NLog.Targets.Teams.Test.App
                    .AddJsonFile("appSettingDemo.json", optional: true, reloadOnChange: true)
                    .Build();
 
-                var servicesProvider = BuildDi(config);
-                using (servicesProvider as IDisposable)
-                {
-                    // comment this in to test the different log levels
-                    var runner = servicesProvider.GetRequiredService<Runner>();
-                    try
-                    {
-                        runner.DoActions();
-                    }
-                    catch (InvalidOperationException e)
-                    {
-                        logger.Fatal(e, "oO ... something is wrong, we're all doomed");
-                    }
+                using var servicesProvider = new ServiceCollection()
+                   .AddTransient<Runner>() // Runner is the custom class
+                   .AddLogging(loggingBuilder =>
+                   {
+                       // configure Logging with NLog
+                       loggingBuilder.ClearProviders();
+                       loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+                       loggingBuilder.AddNLog(config);
+                   })
+                   .BuildServiceProvider();
 
-                    Console.WriteLine("Press ANY key to exit");
-                    Console.ReadKey();
+                // comment this in to test the different log levels
+                var runner = servicesProvider.GetRequiredService<Runner>();
+                try
+                {
+                    runner.DoActions();
                 }
+                catch (InvalidOperationException e)
+                {
+                    logger.Fatal(e, "oO ... something is wrong, we're all doomed");
+                }
+
+                Console.WriteLine("Press ANY key to exit");
+                Console.ReadKey();
             }
             catch (Exception ex)
             {
@@ -53,20 +60,6 @@ namespace NLog.Targets.Teams.Test.App
                 // Ensure to flush and stop internal timers/threads before application-exit (Avoid segmentation fault on Linux)
                 LogManager.Shutdown();
             }
-        }
-
-        private static IServiceProvider BuildDi(IConfiguration config)
-        {
-            return new ServiceCollection()
-               .AddTransient<Runner>() // Runner is the custom class
-               .AddLogging(loggingBuilder =>
-               {
-                   // configure Logging with NLog
-                   loggingBuilder.ClearProviders();
-                   loggingBuilder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
-                   loggingBuilder.AddNLog(config);
-               })
-               .BuildServiceProvider();
         }
     }
 }
